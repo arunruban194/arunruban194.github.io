@@ -1,0 +1,75 @@
+div#div6{
+    background-color:yellow;
+    color:red;
+    font-style:bold ;
+    font-size:30px;
+    text-shadow:-1px -1px 5px red;
+    text-decoration:underline ;
+    box-shadow:5px 3px 10px 10px orange;
+}
+body{
+    background-color:lavender;
+    opacity:0.8;
+    background: linear-gradient(DeepSkyBlue, lavender);
+}
+td{
+    height:55px;
+    width:55px;
+    border:2px solid white;
+    box-shadow:1px 1px 2px 2px grey;
+    font-size:30px;
+    opacity:0.8;
+}
+table{
+    
+    background-color:lightgrey;
+    text-shadow:1px 1px 1px violet;
+    box-shadow:-1px -1px 1px 1px grey;
+}
+div#div1{
+    
+}
+div#div3{
+    
+}
+span#span1{
+    color:purple;
+    font-size:25px;
+    border:1px solid purple;
+    text-shadow:1px 1px 1px grey;
+    box-shadow:1px 1px 5px 5px orange;
+}
+
+span#clk{
+    color:red;
+}
+button#but4{
+    color:purple;
+    background-color:lightblue;
+    border-color:skyblue;
+    box-shadow:1px 1px 5px 5px grey;
+}
+button#but5{
+    color:purple;
+    background-color:lightblue;
+    border-color:skyblue;
+    box-shadow:1px 1px 5px 5px grey;
+}
+button#but1{
+    color:yellow;
+    background-color:orange;
+    border-color:gold;
+    opacity:0.75;
+}
+button#but2{
+    color:yellow;
+    background-color:orange;
+    border-color:gold;
+    opacity:0.6;
+}
+button#but3{
+    color:yellow;
+    background-color:orange;
+    border-color:gold;
+    opacity:0.85;
+}

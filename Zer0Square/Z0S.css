@@ -1,0 +1,19 @@
+body{
+    background-color:lavender;
+    opacity:0.8;
+    background: linear-gradient(DeepSkyBlue, lavender);
+}
+div#div6{
+    background-color:yellow;
+    color:red;
+    font-style:bold ;
+    font-size:30px;
+    text-shadow:-1px -1px 5px red;
+    text-decoration:underline ;
+    box-shadow:5px 3px 10px 10px orange;
+}
+div#div1{
+    font-size:30px;
+    background-color:Deepskyblue;
+    font-style:bold ;
+}
