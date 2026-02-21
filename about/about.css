@@ -1,0 +1,159 @@
+/* ══════════════════════════════════════
+   About page styles
+   ══════════════════════════════════════ */
+
+/* ── back button ── */
+.back-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 24px;
+  border: none; border-radius: 50px;
+  background: rgba(126,184,224,.1);
+  color: #5b9fd6; font-weight: 700; font-size: .95rem;
+  cursor: pointer; text-decoration: none;
+  border: 1px solid rgba(126,184,224,.3);
+  transition: transform .2s, background .2s;
+}
+.back-btn:hover {
+  transform: translateY(-2px);
+  background: rgba(126,184,224,.2);
+}
+.back-btn svg {
+  width: 16px; height: 16px; fill: currentColor;
+}
+
+/* ── profile card ── */
+.about-container {
+  width: 100%; max-width: 860px;
+  padding: 0 24px 60px;
+  position: relative; z-index: 2;
+}
+
+.profile-card {
+  border-radius: 24px;
+  overflow: hidden;
+  background: rgba(255,255,255,.65);
+  border: 1px solid rgba(200,210,225,.5);
+  backdrop-filter: blur(14px);
+}
+
+.profile-banner {
+  height: 180px;
+  background: linear-gradient(135deg, #7eb8e0, #a8d4f0, #c5e4f7);
+  position: relative;
+}
+
+.avatar {
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  border: 5px solid #f0f2f8;
+  object-fit: cover;
+  position: absolute;
+  bottom: -60px; left: 40px;
+  box-shadow: 0 8px 24px rgba(100,140,180,.2);
+}
+
+.profile-body {
+  padding: 80px 40px 40px;
+}
+
+.profile-body h1 {
+  font-size: 2rem; font-weight: 800; color: #2e3a4e;
+  margin-bottom: 4px;
+}
+.profile-body .tagline {
+  font-size: 1rem; color: #5b9fd6; font-weight: 600;
+  margin-bottom: 20px;
+}
+.profile-body .bio {
+  font-size: 1rem; color: #6e7590; line-height: 1.75;
+  max-width: 640px;
+  margin-bottom: 32px;
+}
+
+/* ── info grid ── */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 36px;
+}
+.info-item {
+  padding: 18px 20px;
+  border-radius: 14px;
+  background: rgba(126,184,224,.07);
+  border: 1px solid rgba(200,210,225,.4);
+}
+.info-item .label {
+  font-size: .75rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1px;
+  color: #8a8ea0; margin-bottom: 6px;
+}
+.info-item .value {
+  font-size: 1rem; color: #3a4a60; font-weight: 600;
+}
+
+/* ── skills ── */
+.skills-title {
+  font-size: 1.1rem; font-weight: 700; color: #3a3a50;
+  margin-bottom: 14px;
+}
+.skills {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  margin-bottom: 36px;
+}
+.skill {
+  padding: 8px 18px;
+  border-radius: 50px;
+  font-size: .85rem; font-weight: 600;
+  background: rgba(126,184,224,.12);
+  color: #5b9fd6;
+  border: 1px solid rgba(126,184,224,.25);
+  transition: background .2s, transform .2s;
+}
+.skill:hover {
+  background: rgba(126,184,224,.25);
+  transform: translateY(-2px);
+}
+
+/* ── social links ── */
+.social-links {
+  display: flex; gap: 14px; flex-wrap: wrap;
+}
+.social-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 22px;
+  border-radius: 12px;
+  font-size: .9rem; font-weight: 600;
+  text-decoration: none;
+  transition: transform .2s, box-shadow .2s;
+}
+.social-link:hover {
+  transform: translateY(-2px);
+}
+.social-link svg { width: 18px; height: 18px; fill: currentColor; }
+
+.social-link.github {
+  background: rgba(60,70,85,.08); color: #3c4655;
+  border: 1px solid rgba(60,70,85,.15);
+}
+.social-link.github:hover { box-shadow: 0 6px 20px rgba(60,70,85,.12); }
+
+.social-link.linkedin {
+  background: rgba(91,159,214,.1); color: #5b9fd6;
+  border: 1px solid rgba(91,159,214,.2);
+}
+.social-link.linkedin:hover { box-shadow: 0 6px 20px rgba(91,159,214,.15); }
+
+.social-link.email {
+  background: rgba(100,180,160,.1); color: #5aaa96;
+  border: 1px solid rgba(100,180,160,.2);
+}
+.social-link.email:hover { box-shadow: 0 6px 20px rgba(100,180,160,.15); }
+
+/* ── responsive ── */
+@media (max-width: 520px) {
+  .avatar { left: 50%; transform: translateX(-50%); }
+  .profile-body { padding: 80px 24px 28px; text-align: center; }
+  .info-grid { grid-template-columns: 1fr; }
+  .skills, .social-links { justify-content: center; }
+}
