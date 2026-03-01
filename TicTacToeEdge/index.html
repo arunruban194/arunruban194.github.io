@@ -1,13 +1,22 @@
 <!DOCTYPE html><html lang="en"><head>
   <meta charset="utf-8">
   <title>TicTacToeEdge</title>
-  <base href="/TicTacToeEdge/">
+  <base href="./">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 <style>*,*:before,*:after{box-sizing:border-box}body{background-color:#dfe6ed;margin:0;padding:0;min-height:100vh}</style><link rel="stylesheet" href="styles.7722a6c581f6f0d9.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles.7722a6c581f6f0d9.css"></noscript></head>
 
 <body>
   <app-root></app-root>
-<script src="runtime.caa91e8850a8c66f.js" type="module"></script><script src="polyfills.eebbd89868afe24c.js" type="module"></script><script src="main.1fcd3994b8feb975.js" type="module"></script>
+<script>
+// Patch History API for file:// protocol (origin 'null' blocks replaceState/pushState)
+if(location.protocol==='file:'){
+  var _replaceState=History.prototype.replaceState;
+  History.prototype.replaceState=function(){try{return _replaceState.apply(this,arguments)}catch(e){}};
+  var _pushState=History.prototype.pushState;
+  History.prototype.pushState=function(){try{return _pushState.apply(this,arguments)}catch(e){}};
+}
+</script>
+<script src="runtime.caa91e8850a8c66f.js"></script><script src="polyfills.eebbd89868afe24c.js"></script><script src="main.1fcd3994b8feb975.js"></script>
 
 </body></html>
