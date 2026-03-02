@@ -1,0 +1,109 @@
+/* ============================================
+   Bicycle Animation - Stylesheet
+   ============================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: lavender;
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ---------- Utility ---------- */
+
+.hidden {
+  display: none !important;
+}
+
+/* ---------- Screens ---------- */
+
+.screen {
+  text-align: center;
+  width: 100%;
+  max-width: 1060px;
+  padding: 1rem;
+}
+
+/* ---------- Home Screen ---------- */
+
+#home-screen h1 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#home-screen p {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  padding: 12px 40px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+/* ---------- Animation Screen ---------- */
+
+#animation-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.back-link {
+  align-self: flex-start;
+  color: #a0a0c0;
+  text-decoration: none;
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+  transition: color 0.2s;
+}
+
+.back-link:hover {
+  color: #fff;
+}
+
+#canvas {
+  border: 2px solid #333;
+  border-radius: 8px;
+  background: #fff;
+  max-width: 100%;
+}
+
+#rerun-btn {
+  margin-top: 0.5rem;
+}

@@ -1,0 +1,414 @@
+/* ===== Reset & Base ===== */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, deepskyblue, lavender);
+  font-family: Arial, Helvetica, sans-serif;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ===== Utility ===== */
+.hidden {
+  display: none !important;
+}
+
+/* ===== Header / Title Bar ===== */
+.title-bar {
+  width: 100%;
+  padding: 10px 0;
+  text-align: center;
+  background-color: gold;
+  color: red;
+  font-weight: bold;
+  font-size: 1.6rem;
+  text-shadow: -1px -1px 5px red;
+  text-decoration: underline;
+  box-shadow: 5px 3px 10px 10px orange;
+}
+
+/* ===== Views (Pages) ===== */
+.view {
+  width: 100%;
+  max-width: 700px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+/* ===== Home / Level Select ===== */
+.level-select-heading {
+  font-size: 1.6rem;
+  background-color: deepskyblue;
+  padding: 6px 20px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  border-radius: 4px;
+}
+
+.level-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(85px, 1fr));
+  gap: 24px;
+  margin-bottom: 30px;
+  width: 100%;
+  max-width: 360px;
+}
+
+.level-grid a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+}
+
+.level-grid a img {
+  width: 85px;
+  height: 85px;
+  max-width: 100%;
+  transition: transform 0.15s;
+}
+
+.level-grid a img:hover {
+  transform: scale(1.1);
+}
+
+/* ===== Custom Levels ===== */
+.custom-heading {
+  margin-top: 10px;
+}
+
+.custom-levels {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.custom-card {
+  background: linear-gradient(135deg, lavender, #e0f0ff);
+  border: 2px solid deepskyblue;
+  border-radius: 10px;
+  padding: 18px 24px;
+  text-align: center;
+  min-width: 180px;
+  box-shadow: 0 4px 12px rgba(0, 191, 255, 0.25);
+}
+
+.custom-card h3 {
+  margin: 0 0 6px;
+  color: #333;
+  font-size: 1.15rem;
+}
+
+.custom-desc {
+  font-size: 0.85rem;
+  color: #555;
+  margin: 0 0 12px;
+}
+
+.custom-card label {
+  font-size: 0.9rem;
+  color: #333;
+  margin-right: 6px;
+}
+
+.custom-card select {
+  padding: 4px 8px;
+  font-size: 0.95rem;
+  border-radius: 4px;
+  border: 1px solid deepskyblue;
+  background: lavender;
+  color: #333;
+  cursor: pointer;
+}
+
+.btn-play-custom {
+  display: block;
+  margin: 14px auto 0;
+  padding: 8px 28px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: 2px solid deepskyblue;
+  border-radius: 6px;
+  background: deepskyblue;
+  color: #333;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+}
+
+.btn-play-custom:hover {
+  opacity: 0.85;
+  transform: scale(1.05);
+}
+
+/* ===== Game View ===== */
+.toolbar {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.toolbar button {
+  padding: 6px 14px;
+  font-size: 0.9rem;
+  border: 2px solid gold;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #fff;
+  background-color: orange;
+  font-weight: bold;
+  transition: opacity 0.2s;
+}
+
+.toolbar button:hover {
+  opacity: 0.85;
+}
+
+.game-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.game-controls button {
+  padding: 6px 16px;
+  font-size: 0.9rem;
+  color: purple;
+  background-color: lightblue;
+  border: 2px solid skyblue;
+  border-radius: 4px;
+  box-shadow: 1px 1px 5px 5px grey;
+  cursor: pointer;
+  font-weight: bold;
+  transition: opacity 0.2s;
+}
+
+.game-controls button:hover {
+  opacity: 0.85;
+}
+
+.level-badge {
+  color: purple;
+  font-size: 1.3rem;
+  border: 1px solid purple;
+  text-shadow: 1px 1px 1px grey;
+  box-shadow: 1px 1px 5px 5px orange;
+  padding: 4px 12px;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+/* ===== Game Board ===== */
+.board-container {
+  margin-bottom: 20px;
+}
+
+.board {
+  border-collapse: collapse;
+  background-color: lightgrey;
+  text-shadow: 1px 1px 1px violet;
+  box-shadow: -1px -1px 1px 1px grey;
+}
+
+.board td {
+  height: 55px;
+  width: 55px;
+  border: 2px solid white;
+  box-shadow: 1px 1px 2px 2px grey;
+  font-size: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.15s, transform 0.15s;
+}
+
+.board td:hover {
+  background-color: #dce8f0;
+}
+
+.board td.zero-cell {
+  color: green;
+  font-weight: bold;
+}
+
+/* Swap flash animation */
+@keyframes cell-flash {
+  0%   { transform: scale(1.15); background-color: lightyellow; }
+  100% { transform: scale(1);    background-color: lightgrey; }
+}
+
+.board td.cell-flash {
+  animation: cell-flash 0.25s ease-out;
+}
+
+/* ===== Timer ===== */
+.timer {
+  font-size: 1.2rem;
+  color: red;
+  margin-bottom: 16px;
+}
+
+/* ===== Result Overlay ===== */
+.result-container {
+  text-align: center;
+  padding: 30px;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.result-container.win {
+  box-shadow: 2px 2px 5px 5px green;
+}
+
+.result-container.lose {
+  box-shadow: 2px 2px 5px 5px red;
+}
+
+.result-container h2 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.result-container p {
+  font-size: 1.4rem;
+  margin-bottom: 16px;
+}
+
+.result-container .timer-result {
+  font-size: 1.3rem;
+  color: purple;
+  box-shadow: 1px 1px 3px 3px gold;
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.result-container button {
+  padding: 10px 24px;
+  font-size: 1rem;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  margin: 6px;
+  transition: opacity 0.2s;
+}
+
+.result-container button:hover {
+  opacity: 0.85;
+}
+
+.btn-replay {
+  background-color: #4caf50;
+}
+
+.btn-home {
+  background-color: #2196f3;
+}
+
+/* ===== Footer ===== */
+.footer {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  margin-top: auto;
+}
+
+.footer img {
+  width: 40px;
+  height: 40px;
+}
+
+.footer .gh-link svg {
+  transition: opacity 0.2s;
+}
+
+.footer .gh-link:hover svg {
+  opacity: 0.7;
+}
+
+/* ===== Best-time badge (home screen) ===== */
+.best-badge {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.7rem;
+  color: #555;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+/* ===== Best-time (result screen) ===== */
+.best-time {
+  font-size: 1rem;
+  color: deepskyblue;
+  margin-bottom: 14px;
+  font-weight: bold;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 520px) {
+  .title-bar {
+    font-size: 1.2rem;
+  }
+
+  .level-grid {
+    gap: 14px;
+    max-width: 260px;
+  }
+
+  .level-grid a img {
+    width: 65px;
+    height: 65px;
+  }
+
+  .board td {
+    height: 38px;
+    width: 38px;
+    font-size: 1rem;
+  }
+
+  .toolbar button,
+  .game-controls button {
+    font-size: 0.8rem;
+    padding: 4px 10px;
+  }
+
+  .custom-levels {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .custom-card {
+    min-width: 160px;
+    padding: 14px 18px;
+  }
+}
