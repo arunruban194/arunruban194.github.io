@@ -235,20 +235,39 @@ body {
 .board td {
   height: 55px;
   width: 55px;
+  padding: 0;
   border: 2px solid white;
   box-shadow: 1px 1px 2px 2px grey;
+  transition: background-color 0.15s, transform 0.15s;
+}
+
+/* Each cell is a button (keyboard + screen reader); it fills the cell and looks like the old cell */
+.board .cell {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  font: inherit;
   font-size: 1.5rem;
+  color: inherit;
+  text-shadow: inherit;
   text-align: center;
   cursor: pointer;
   user-select: none;
-  transition: background-color 0.15s, transform 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.board .cell:focus-visible {
+  outline: 3px solid #1565c0;
+  outline-offset: -3px;
 }
 
 .board td:hover {
   background-color: #dce8f0;
 }
 
-.board td.zero-cell {
+.board td.zero-cell .cell {
   color: green;
   font-weight: bold;
 }
@@ -261,6 +280,52 @@ body {
 
 .board td.cell-flash {
   animation: cell-flash 0.25s ease-out;
+}
+
+/* ===== Info panel ===== */
+.info-dialog {
+  margin: auto;
+  max-width: min(420px, calc(100vw - 32px));
+  padding: 20px 22px;
+  border: 2px solid purple;
+  border-radius: 10px;
+  background: #fff;
+  color: #333;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  text-align: left;
+}
+
+.info-dialog::backdrop {
+  background: rgb(30, 30, 60); /* opaque: the board stays hidden while the clock is paused */
+}
+
+.info-dialog h2 {
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+  color: purple;
+}
+
+.info-dialog p {
+  font-size: 1.05rem;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.info-dialog .info-note {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.info-dialog button {
+  display: block;
+  margin: 6px auto 0;
+  min-width: 96px;
+  min-height: 44px;
+  font-size: 1rem;
+  border: 1px solid purple;
+  border-radius: 6px;
+  background: #f3e5f5;
+  cursor: pointer;
 }
 
 /* ===== Timer ===== */
@@ -392,6 +457,9 @@ body {
   .board td {
     height: 38px;
     width: 38px;
+  }
+
+  .board .cell {
     font-size: 1rem;
   }
 

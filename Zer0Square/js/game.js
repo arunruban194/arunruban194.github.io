@@ -83,7 +83,12 @@ const Game = (() =>
                 const idx = r * cols + c;
                 const td = document.createElement("td");
                 td.dataset.index = idx;
-                td.addEventListener("click", () => handleCellClick(idx));
+                // A real button: works with the keyboard (Tab, Enter, Space) and screen readers
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.classList.add("cell");
+                btn.addEventListener("click", () => handleCellClick(idx));
+                td.appendChild(btn);
                 tr.appendChild(td);
             }
             table.appendChild(tr);
@@ -97,7 +102,13 @@ const Game = (() =>
         boardEl.querySelectorAll("td").forEach((td) =>
         {
             const idx = Number(td.dataset.index);
-            td.textContent = arr[idx];
+            const btn = td.firstElementChild;
+            const row = Math.floor(idx / cfg.cols) + 1;
+            const col = (idx % cfg.cols) + 1;
+            btn.textContent = arr[idx];
+            btn.setAttribute("aria-label", arr[idx] === 0
+                ? `0, the key, row ${row}, column ${col}`
+                : `${arr[idx]}, row ${row}, column ${col}`);
             td.classList.toggle("zero-cell", arr[idx] === 0);
 
             // Swap flash animation
@@ -120,18 +131,10 @@ const Game = (() =>
         if (gameOver) return;
 
         const zeroIdx = arr.indexOf(0);
+        if (clickedIdx === zeroIdx) return; // tapping 0 itself does nothing
 
-        // Clicking position 0 triggers end-game
-        if (clickedIdx === 0)
-        {
-            arr[zeroIdx] = arr[0];
-            arr[0] = 0;
-            renderBoard([0, zeroIdx]);
-            endGame();
-            return;
-        }
-
-        // Validate move via Rules module
+        // The move rule comes first, also for the top-left cell: a stray tap there
+        // must not end the round, and an illegal last swap must not win.
         if (!Rules.isMoveAllowed(clickedIdx, arr, cfg))
         {
             showToast("Click a number next to 0!");
@@ -142,6 +145,9 @@ const Game = (() =>
         arr[zeroIdx] = arr[clickedIdx];
         arr[clickedIdx] = 0;
         renderBoard([clickedIdx, zeroIdx]);
+
+        // 0 is back home: the round ends (won if everything is sorted)
+        if (clickedIdx === 0) endGame();
     }
 
     function endGame()
@@ -211,18 +217,25 @@ const Game = (() =>
             : `z0s-best-${c.levelNum}`;
     }
 
+    /** Best time in ms, or null when none is saved, the value is corrupt, or storage is blocked. */
     function getBestTime(c)
     {
-        const v = localStorage.getItem(bestTimeKey(c));
-        return v !== null ? Number(v) : null;
+        let v = null;
+        try { v = localStorage.getItem(bestTimeKey(c)); }
+        catch (e) { return null; } // storage blocked (privacy mode, sandbox)
+        if (v === null) return null;
+        const ms = Number(v);
+        return Number.isFinite(ms) && ms > 0 ? ms : null;
     }
 
     function saveBestTime(c, ms)
     {
+        if (!Number.isFinite(ms) || ms <= 0) return;
         const prev = getBestTime(c);
         if (prev === null || ms < prev)
         {
-            localStorage.setItem(bestTimeKey(c), ms);
+            try { localStorage.setItem(bestTimeKey(c), String(Math.round(ms))); }
+            catch (e) { /* storage blocked or full: the game goes on without saving */ }
         }
     }
 
@@ -248,6 +261,8 @@ const Game = (() =>
         {
             toast = document.createElement("div");
             toast.id = "toast";
+            toast.setAttribute("role", "status");
+            toast.setAttribute("aria-live", "polite");
             toast.style.cssText =
                 "position:fixed;bottom:20px;left:50%;transform:translateX(-50%);" +
                 "background:#333;color:#fff;padding:10px 22px;border-radius:6px;" +
@@ -261,11 +276,65 @@ const Game = (() =>
     }
 
     /* ══════════════════════════════════════════
+     *  Info panel (HowTo / About / Help)
+     *  Long texts get a panel the player closes, not a 1.5 s toast.
+     *  The clock pauses while it is open; the board is covered.
+     * ══════════════════════════════════════════ */
+
+    function showInfo(title, text)
+    {
+        const dlg = document.getElementById("info-dialog");
+        if (!dlg || typeof dlg.showModal !== "function") { showToast(text); return; }
+        document.getElementById("info-title").textContent = title;
+        document.getElementById("info-text").textContent = text;
+        if (dlg.open) return;
+        resumeOnClose = !!timerStart && !gameOver;
+        if (resumeOnClose) pauseTimer();
+        dlg.showModal();
+    }
+
+    let resumeOnClose = false;
+    function onInfoClosed()
+    {
+        if (resumeOnClose && !gameOver && !timerStart) resumeTimer();
+        resumeOnClose = false;
+    }
+
+    /** Close the panel without resuming (leaving the level or starting a new one). */
+    function closeInfo()
+    {
+        resumeOnClose = false;
+        const dlg = document.getElementById("info-dialog");
+        if (dlg && dlg.open) dlg.close();
+    }
+
+    function wireInfoDialog()
+    {
+        const dlg = document.getElementById("info-dialog");
+        if (!dlg || dlg.dataset.wired) return;
+        dlg.addEventListener("close", onInfoClosed);
+        document.getElementById("info-ok").addEventListener("click", () => dlg.close());
+        dlg.dataset.wired = "1";
+    }
+
+    function pauseTimer()
+    {
+        stopTimer(); // keeps elapsedMs
+    }
+
+    function resumeTimer()
+    {
+        timerStart = Date.now() - elapsedMs;
+        timerRAF = requestAnimationFrame(tickTimer);
+    }
+
+    /* ══════════════════════════════════════════
      *  Public API
      * ══════════════════════════════════════════ */
 
     function showHome()
     {
+        closeInfo();
         stopTimer();
         document.getElementById("view-home").classList.remove("hidden");
         document.getElementById("view-game").classList.add("hidden");
@@ -328,6 +397,8 @@ const Game = (() =>
 
     function startLevel(levelNum, gridSize)
     {
+        closeInfo();
+        wireInfoDialog();
         levelNum = Number(levelNum);
         currentGridSize = gridSize || null;
         cfg = Levels.get(levelNum, currentGridSize);
@@ -407,18 +478,18 @@ const Game = (() =>
     function showHowTo()
     {
         const desc = Levels.ruleDescription(cfg.rule);
-        showToast(`Level ${cfg.levelNum}: Arrange 0-${totalCells - 1} by ${desc} before 0 returns to position 0.`);
+        showInfo("How to play", `Level ${cfg.levelNum}: Arrange 0-${totalCells - 1} by ${desc} before 0 returns to position 0.`);
     }
 
     function showAbout()
     {
-        showToast(`Zer0Square Game — Level ${cfg.levelNum}. Created by Arun Ruban SJ.`);
+        showInfo("About", `Zer0Square Game — Level ${cfg.levelNum}. Created by Arun Ruban SJ.`);
     }
 
     function showHelp()
     {
         const desc = Levels.ruleDescription(cfg.rule);
-        showToast(
+        showInfo("Help",
             `0 is the key (green). ${desc.charAt(0).toUpperCase() + desc.slice(1)}. ` +
             `Don't send 0 back to position 0 until everything is sorted! Reset restarts the current set; NextSet generates a new one.`
         );
