@@ -36,6 +36,7 @@ class Bicycle
         this.groundY = groundY;
         this.wheelAngle = 0;
         this.pedalPhase = 0;          // toggles 0 ↔ 1 each frame
+        this.wheelShadow = true;      // grey ghost wheels in styled mode
     }
 
     /** Advance position & animation state by one frame */
@@ -67,7 +68,7 @@ class Bicycle
         ctx.lineWidth = styled ? 5 : 1;
         ctx.strokeStyle = 'black';
 
-        if (styled)
+        if (styled && this.wheelShadow)
         {
             ctx.shadowBlur = 10;
             ctx.shadowOffsetX = 30;

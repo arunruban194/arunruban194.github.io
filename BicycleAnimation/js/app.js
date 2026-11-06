@@ -1,9 +1,11 @@
 /**
- * App entry-point – handles hash-based routing and button interactions.
+ * App entry-point – hash-based routing between the front page and the animations.
  *
  * Routes:
- *   #/            → Home screen  (Start button)
- *   #/animation   → Animation    (canvas + Rerun button on finish)
+ *   #/            → Front page (one number box per entry in ANIMATIONS)
+ *   #/<number>    → That animation (canvas + Rerun button on finish)
+ *   #/animation   → Old link, opens animation 1
+ *   anything else → Front page
  */
 class App
 {
@@ -13,41 +15,72 @@ class App
         // DOM refs
         this.homeScreen = document.getElementById('home-screen');
         this.animationScreen = document.getElementById('animation-screen');
+        this.animationGrid = document.getElementById('animation-grid');
         this.canvas = document.getElementById('canvas');
-        this.startBtn = document.getElementById('start-btn');
         this.rerunBtn = document.getElementById('rerun-btn');
 
         this.controller = null;
+        this.current = null;          // ANIMATIONS entry being shown
 
+        this._renderBoxes();
         this._bindEvents();
         this._handleRoute();           // honour URL on first load
+    }
+
+    /* ---------- front page ---------- */
+
+    _renderBoxes()
+    {
+        for (const anim of ANIMATIONS)
+        {
+            const link = document.createElement('a');
+            link.className = 'animation-box';
+            link.href = `#/${anim.number}`;
+            link.setAttribute('aria-label', `Animation ${anim.number}: ${anim.title}`);
+
+            const number = document.createElement('span');
+            number.className = 'animation-box__number';
+            number.textContent = anim.number;
+
+            const title = document.createElement('span');
+            title.className = 'animation-box__title';
+            title.textContent = anim.title;
+
+            link.append(number, title);
+            this.animationGrid.append(link);
+        }
     }
 
     /* ---------- events ---------- */
 
     _bindEvents()
     {
-        this.startBtn.addEventListener('click', () => this._navigate('animation'));
         this.rerunBtn.addEventListener('click', () => this._rerun());
         window.addEventListener('hashchange', () => this._handleRoute());
     }
 
     /* ---------- routing ---------- */
 
-    _navigate(route)
-    {
-        window.location.hash = `#/${route}`;
-    }
-
     _handleRoute()
     {
         const hash = window.location.hash || '#/';
 
+        // Old single-animation link
         if (hash === '#/animation')
         {
-            this._showAnimation();
+            window.location.replace('#/1');
+            return;
+        }
+
+        const match = hash.match(/^#\/(\d+)$/);
+        const anim = match && ANIMATIONS.find(a => a.number === Number(match[1]));
+
+        if (anim)
+        {
+            this._showAnimation(anim);
         } else
         {
+            if (hash !== '#/') window.location.replace('#/');
             this._showHome();
         }
     }
@@ -56,23 +89,23 @@ class App
 
     _showHome()
     {
+        this._stopController();
+        this.current = null;
+        document.title = 'Bicycle Animations';
+
         this.homeScreen.classList.remove('hidden');
         this.animationScreen.classList.add('hidden');
         this.rerunBtn.classList.add('hidden');
-
-        // Tear down any running animation
-        if (this.controller)
-        {
-            this.controller.stop();
-            this.controller = null;
-        }
 
         // Reset canvas background
         this.canvas.style.backgroundColor = '#fff';
     }
 
-    _showAnimation()
+    _showAnimation(anim)
     {
+        this.current = anim;
+        document.title = `${anim.number}. ${anim.title} – Bicycle Animations`;
+
         this.homeScreen.classList.add('hidden');
         this.animationScreen.classList.remove('hidden');
         this.rerunBtn.classList.add('hidden');
@@ -81,14 +114,25 @@ class App
 
     /* ---------- animation lifecycle ---------- */
 
-    _startAnimation()
+    _stopController()
     {
         if (this.controller)
         {
             this.controller.stop();
+            this.controller = null;
         }
+    }
 
-        this.controller = new AnimationController(this.canvas, () =>
+    _startAnimation()
+    {
+        this._stopController();
+
+        // Clear what the previous animation left on the canvas
+        const ctx = this.canvas.getContext('2d');
+        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.canvas.style.backgroundColor = '#fff';
+
+        this.controller = this.current.create(this.canvas, () =>
         {
             // Animation finished → show Rerun button
             this.rerunBtn.classList.remove('hidden');

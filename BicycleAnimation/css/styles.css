@@ -1,6 +1,40 @@
 /* ============================================
-   Bicycle Animation - Stylesheet
+   Bicycle Animations - Stylesheet
    ============================================ */
+
+/* ---------- Theme tokens ---------- */
+
+:root {
+  --page-bg: lavender;
+  --text: #333;
+  --heading-bg: deepskyblue;
+  --heading-text: #fff;
+  --box-bg: #c7e6ee;
+  --box-border: #7fa3b3;
+  --box-number: #3b3866;
+  --box-shadow: rgba(59, 56, 102, 0.25);
+  --box-title: #3b3866;
+  --link: #6a6a9a;
+  --link-hover: #3b3866;
+  --canvas-border: #333;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page-bg: #1d1b2e;
+    --text: #e6e4f2;
+    --heading-bg: #1f7fa8;
+    --heading-text: #fff;
+    --box-bg: #2c4a57;
+    --box-border: #5f8fa3;
+    --box-number: #e6f6fb;
+    --box-shadow: rgba(0, 0, 0, 0.45);
+    --box-title: #d8d4f0;
+    --link: #a0a0c0;
+    --link-hover: #fff;
+    --canvas-border: #5f5a80;
+  }
+}
 
 * {
   margin: 0;
@@ -10,8 +44,8 @@
 
 body {
   font-family: "Segoe UI", Arial, sans-serif;
-  background: lavender;
-  color: #333;
+  background: var(--page-bg);
+  color: var(--text);
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -33,21 +67,90 @@ body {
   padding: 1rem;
 }
 
-/* ---------- Home Screen ---------- */
+/* ---------- Front page ---------- */
+
+#home-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 #home-screen h1 {
   font-size: 3rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1.25rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-#home-screen p {
-  font-size: 1.2rem;
-  color: #555;
-  margin-bottom: 2rem;
+@media (prefers-color-scheme: dark) {
+  #home-screen h1 {
+    background-image: linear-gradient(135deg, #8fa2ff 0%, #c08bf0 100%);
+  }
+}
+
+.choose-heading {
+  font-size: 1.6rem;
+  background-color: var(--heading-bg);
+  color: var(--heading-text);
+  padding: 6px 20px;
+  margin-bottom: 24px;
+  border-radius: 4px;
+}
+
+.animation-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 28px;
+  max-width: 600px;
+}
+
+.animation-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  border-radius: 6px;
+}
+
+.animation-box__number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  background: var(--box-bg);
+  border: 3px double var(--box-border);
+  border-radius: 4px;
+  color: var(--box-number);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 3rem;
+  box-shadow: 2px 3px 8px var(--box-shadow);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.animation-box__title {
+  color: var(--box-title);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.animation-box:hover .animation-box__number,
+.animation-box:focus-visible .animation-box__number {
+  transform: scale(1.1);
+  box-shadow: 3px 5px 14px var(--box-shadow);
+}
+
+.animation-box:active .animation-box__number {
+  transform: scale(1.03);
+}
+
+.animation-box:focus-visible {
+  outline: 3px solid var(--heading-bg);
+  outline-offset: 6px;
 }
 
 /* ---------- Buttons ---------- */
@@ -86,7 +189,7 @@ body {
 
 .back-link {
   align-self: flex-start;
-  color: #a0a0c0;
+  color: var(--link);
   text-decoration: none;
   font-size: 0.95rem;
   margin-bottom: 0.25rem;
@@ -94,11 +197,12 @@ body {
 }
 
 .back-link:hover {
-  color: #fff;
+  color: var(--link-hover);
 }
 
+/* The drawing stays light in both themes so the black sketch is visible */
 #canvas {
-  border: 2px solid #333;
+  border: 2px solid var(--canvas-border);
   border-radius: 8px;
   background: #fff;
   max-width: 100%;
@@ -106,4 +210,26 @@ body {
 
 #rerun-btn {
   margin-top: 0.5rem;
+}
+
+/* ---------- Phone ---------- */
+
+@media (max-width: 480px) {
+  #home-screen h1 {
+    font-size: 2.1rem;
+  }
+
+  .choose-heading {
+    font-size: 1.3rem;
+  }
+
+  .animation-grid {
+    gap: 18px;
+  }
+
+  .animation-box__number {
+    width: 76px;
+    height: 76px;
+    font-size: 2.4rem;
+  }
 }

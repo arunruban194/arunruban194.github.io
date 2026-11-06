@@ -12,6 +12,12 @@ const PHASE2_HEADING = 'SUCCESS';
 const FINAL_MESSAGE = "Hard work beats talent when talent doesn't work hard!";
 /* ================================= */
 
+/* Clouds for the coloured phase, placed clear of the text */
+const PHASE2_CLOUDS = [
+    { x: 70, y: 150, scale: 0.9 },
+    { x: 700, y: 230, scale: 0.8 },
+];
+
 class Scene
 {
 
@@ -20,8 +26,11 @@ class Scene
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
 
-        // Reusable gradient for accent text
+        // Reusable gradients for accent text
         this.gradient = this._createGradient();
+        this.messageGradient = this.ctx.createLinearGradient(150, 0, 850, 0);
+        this.messageGradient.addColorStop(0, '#667eea');
+        this.messageGradient.addColorStop(1, '#764ba2');
     }
 
     /** Wipe the entire canvas */
@@ -34,8 +43,8 @@ class Scene
 
     drawPhase1Background()
     {
-        this.canvas.style.backgroundColor = '#fff';
         const ctx = this.ctx;
+        Backdrop.sketch(ctx, this.canvas.width, this.canvas.height);
 
         ctx.save();
         ctx.font = '42px Arial';
@@ -60,14 +69,21 @@ class Scene
 
     drawPhase2Background()
     {
-        this.canvas.style.backgroundColor = 'lavender';
         const ctx = this.ctx;
+        const { width, height } = this.canvas;
+
+        // Same sunny day as animation 2; ground is the bottom of the wheels
+        Backdrop.sky(ctx, width, height, GROUND_Y + Bicycle.WHEEL_RADIUS, PHASE2_CLOUDS);
 
         ctx.save();
         ctx.font = '80px Cursive';
+        ctx.lineJoin = 'round';
+        ctx.lineWidth = 8;
+        ctx.strokeStyle = '#fff';
+        ctx.strokeText(PHASE2_HEADING, 200, 200);
         ctx.shadowBlur = 10;
         ctx.shadowOffsetX = 5;
-        ctx.shadowColor = 'skyblue';
+        ctx.shadowColor = 'rgba(30, 60, 140, 0.35)';
         ctx.fillStyle = this.gradient;
         ctx.fillText(PHASE2_HEADING, 200, 200);
         ctx.restore();                  // shadow doesn't leak
@@ -80,12 +96,13 @@ class Scene
         const ctx = this.ctx;
 
         ctx.save();
-        ctx.font = '26px Arial';
-        ctx.shadowBlur = 10;
-        ctx.shadowOffsetX = 5;
-        ctx.shadowColor = 'skyblue';
-        ctx.fillStyle = this.gradient;
-        ctx.fillText(FINAL_MESSAGE, 40, 70);
+        ctx.font = 'bold 26px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        const cx = this.canvas.width / 2 - 40, cy = 60;   // keeps the bubble clear of the sun
+        Backdrop.pill(ctx, cx, cy, ctx.measureText(FINAL_MESSAGE).width + 48, 54);
+        ctx.fillStyle = this.messageGradient;
+        ctx.fillText(FINAL_MESSAGE, cx, cy + 1);
         ctx.restore();
     }
 
@@ -93,10 +110,11 @@ class Scene
 
     _createGradient()
     {
-        const g = this.ctx.createLinearGradient(0, 0, 600, 0);
-        g.addColorStop(0, 'skyblue');
-        g.addColorStop(0.5, 'blue');
-        g.addColorStop(1, 'skyblue');
+        // Deeper blues than before so the words read on the sky
+        const g = this.ctx.createLinearGradient(200, 0, 600, 0);
+        g.addColorStop(0, '#3a8ee6');
+        g.addColorStop(0.5, '#1d2fc4');
+        g.addColorStop(1, '#3a8ee6');
         return g;
     }
 }

@@ -4,30 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bicycle Animation</title>
+    <meta name="color-scheme" content="light dark">
+    <title>Bicycle Animations</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
 
-    <!-- Home Screen (#/) -->
+    <!-- Front page (#/) -->
     <div id="home-screen" class="screen">
-        <h1>Bicycle Animation</h1>
-        <p>Watch the journey from hard work to success</p>
-        <button id="start-btn" class="btn">&#9654; Start</button>
+        <h1>Bicycle Animations</h1>
+        <h2 class="choose-heading">Choose an animation:</h2>
+        <nav id="animation-grid" class="animation-grid" aria-label="Animations"></nav>
     </div>
 
-    <!-- Animation Screen (#/animation) -->
+    <!-- Animation screen (#/1, #/2 …) -->
     <div id="animation-screen" class="screen hidden">
         <a href="#/" class="back-link">&larr; Back</a>
         <canvas id="canvas" width="1000" height="500"></canvas>
         <button id="rerun-btn" class="btn hidden">&#8635; Rerun</button>
     </div>
 
+    <script src="js/Backdrop.js"></script>
     <script src="js/Bicycle.js"></script>
     <script src="js/Rider.js"></script>
     <script src="js/Scene.js"></script>
     <script src="js/AnimationController.js"></script>
+    <script src="js/BigJump.js"></script>
+    <script src="js/animations.js"></script>
     <script src="js/app.js"></script>
 </body>
 
